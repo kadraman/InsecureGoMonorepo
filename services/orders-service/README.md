@@ -1,5 +1,7 @@
 # Orders Service
 
+[![Orders Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/orders-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/orders-service.yml)
+
 A deliberately insecure order management microservice for security testing demonstrations.
 
 ## Security Vulnerabilities (Intentional)

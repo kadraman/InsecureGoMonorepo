@@ -1,5 +1,7 @@
 # Users Service
 
+[![Users Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/users-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/users-service.yml)
+
 A deliberately insecure user management microservice for security testing demonstrations.
 
 ## Security Vulnerabilities (Intentional)

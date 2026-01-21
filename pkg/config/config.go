@@ -7,7 +7,7 @@ import (
 
 // VULNERABILITY: Hardcoded Secrets
 const (
-	DefaultDBPassword = "admin123"           // Hardcoded password
+	DefaultDBPassword = "admin123"            // Hardcoded password
 	APIKey            = "sk-1234567890abcdef" // Hardcoded API key
 	JWTSecret         = "my-secret-key"       // Hardcoded JWT secret
 )

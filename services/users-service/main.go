@@ -33,6 +33,14 @@ type LoginRequest struct {
 
 func main() {
 	logger = logging.NewLogger("users-service")
+	// Set per-service defaults for DB auto-seeding if not already set
+	if os.Getenv("DB_AUTO_SEED") == "" {
+		os.Setenv("DB_AUTO_SEED", "1")
+	}
+	if os.Getenv("DB_SEED_FILE") == "" {
+		os.Setenv("DB_SEED_FILE", "services/users-service/seed.sql")
+	}
+
 	cfg, _ = config.LoadConfig("")
 	db, _ = database.NewDatabase(cfg.DatabaseHost, cfg.DatabaseUser, cfg.DatabasePassword, cfg.DatabasePort)
 
@@ -41,6 +49,7 @@ func main() {
 	// User endpoints
 	router.POST("/users", createUser)
 	router.GET("/users/:username", getUser)
+	router.GET("/users/id/:id", getUserByID)
 	router.POST("/login", login)
 	router.GET("/search", searchUsers)
 	router.GET("/export", exportUsers)
@@ -86,6 +95,21 @@ func getUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+// getUserByID retrieves a user by numeric id (used by other services for snapshotting)
+func getUserByID(c *gin.Context) {
+	id := c.Param("id")
+
+	query := "SELECT id, username, email FROM users WHERE id = " + id
+	results, err := db.ExecuteQuery(query)
+	if err != nil || results == nil || len(results) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	// Return the first row
+	c.JSON(http.StatusOK, results[0])
 }
 
 // VULNERABILITY: SQL Injection via search parameter

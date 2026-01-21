@@ -1,5 +1,7 @@
 # API Gateway
 
+[![API Gateway](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/api-gateway.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/api-gateway.yml)
+
 A deliberately insecure API gateway for routing requests to microservices, designed for security testing demonstrations.
 
 ## Security Vulnerabilities (Intentional)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -41,6 +42,14 @@ type XMLOrder struct {
 
 func main() {
 	logger = logging.NewLogger("orders-service")
+	// Set per-service defaults for DB auto-seeding if not already set
+	if os.Getenv("DB_AUTO_SEED") == "" {
+		os.Setenv("DB_AUTO_SEED", "1")
+	}
+	if os.Getenv("DB_SEED_FILE") == "" {
+		os.Setenv("DB_SEED_FILE", "services/orders-service/seed.sql")
+	}
+
 	cfg, _ = config.LoadConfig("")
 	db, _ = database.NewDatabase(cfg.DatabaseHost, cfg.DatabaseUser, cfg.DatabasePassword, cfg.DatabasePort)
 
@@ -75,11 +84,33 @@ func createOrder(c *gin.Context) {
 	order.CreatedAt = time.Now()
 	order.Status = "pending"
 
-	// VULNERABILITY: SQL Injection
-	query := fmt.Sprintf("INSERT INTO orders (user_id, product_id, quantity, total_price, status, created_at) VALUES (%d, %d, %d, %f, '%s', '%s')",
-		order.UserID, order.ProductID, order.Quantity, order.TotalPrice, order.Status, order.CreatedAt.Format(time.RFC3339))
+	// Use an HTTP client with timeout for REST calls
+	client := &http.Client{Timeout: 2 * time.Second}
 
-	_, err := db.ExecuteQuery(query)
+	// Snapshot user data from users-service
+	userSnapshot := map[string]interface{}{}
+	userResp, err := client.Get(fmt.Sprintf("http://localhost:8081/users/id/%d", order.UserID))
+	if err == nil && userResp.StatusCode == http.StatusOK {
+		defer userResp.Body.Close()
+		_ = json.NewDecoder(userResp.Body).Decode(&userSnapshot)
+	}
+
+	// Snapshot product data from products-service
+	productSnapshot := map[string]interface{}{}
+	prodResp, err := client.Get(fmt.Sprintf("http://localhost:8082/products/%d", order.ProductID))
+	if err == nil && prodResp.StatusCode == http.StatusOK {
+		defer prodResp.Body.Close()
+		_ = json.NewDecoder(prodResp.Body).Decode(&productSnapshot)
+	}
+
+	userSnapJSON, _ := json.Marshal(userSnapshot)
+	prodSnapJSON, _ := json.Marshal(productSnapshot)
+
+	// VULNERABILITY: SQL Injection - intentionally vulnerable insert with snapshots
+	query := fmt.Sprintf("INSERT INTO orders (user_id, product_id, quantity, total_price, status, created_at, user_snapshot, product_snapshot) VALUES (%d, %d, %d, %f, '%s', '%s', '%s', '%s')",
+		order.UserID, order.ProductID, order.Quantity, order.TotalPrice, order.Status, order.CreatedAt.Format(time.RFC3339), string(userSnapJSON), string(prodSnapJSON))
+
+	_, err = db.ExecuteQuery(query)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create order"})
 		return

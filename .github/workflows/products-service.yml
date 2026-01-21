@@ -16,7 +16,13 @@ on:
 
 jobs:
   run-common:
-    uses: ./.github/workflows/common-build-test.yml
+    uses: ./.github/workflows/common/build-test.yml
     with:
       path: services/products-service
       command: ${{ github.event.inputs.command || 'go test ./...' }}
+  run-fortify:
+    needs: run-common
+    uses: ./.github/workflows/common/fortify-ast-scan.yml
+    with:
+      path: services/products-service
+      name: products-service

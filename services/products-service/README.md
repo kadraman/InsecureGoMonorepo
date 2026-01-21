@@ -1,5 +1,7 @@
 # Products Service
 
+[![Products Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/products-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/products-service.yml)
+
 A deliberately insecure product management microservice for security testing demonstrations.
 
 ## Security Vulnerabilities (Intentional)

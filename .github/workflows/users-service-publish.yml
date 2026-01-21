@@ -9,7 +9,7 @@ on:
 
 jobs:
   publish:
-    uses: ./.github/workflows/common/common-publish-container.yml
+    uses: ./.github/workflows/common/publish-container.yml
     with:
       service_path: 'services/users-service'
       image_name: 'ghcr.io/${{ github.repository_owner }}/users-service'

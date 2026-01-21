@@ -3,47 +3,6 @@
 ⚠️ **WARNING: This repository contains intentionally vulnerable code for security testing demonstrations. DO NOT use in production!**
 
 [![Packages CI](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/packages.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/packages.yml) [![Users Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/users-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/users-service.yml) [![Products Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/products-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/products-service.yml) [![Orders Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/orders-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/orders-service.yml) [![API Gateway](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/api-gateway.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/api-gateway.yml)
-An insecure Go microservices monorepo designed for application security testing scenarios with GitHub Advanced Security, Fortify/OpenText, and other security scanning tools.
-
-## Overview
-
-This monorepo contains multiple Go microservices with deliberate security vulnerabilities for educational and testing purposes. Each service uses the Gin web framework for routing and shares common packages for logging, configuration, and database operations.
-
-## Architecture
-
-### Services
-
-- **users-service** (Port 8081) - User management and authentication
-- **products-service** (Port 8082) - Product catalog management
-- **orders-service** (Port 8083) - Order processing
-- **api-gateway** (Port 8080) - API gateway for routing requests
-
-### Shared Packages
-
-- **pkg/logging** - Logging utilities
-- **pkg/config** - Configuration management
-- **pkg/database** - Database operations
-
-## Security Vulnerabilities (Intentional)
-
-This repository demonstrates various security vulnerabilities including:
-
-### SQL Injection
-- Direct string concatenation in SQL queries across all services
-- Vulnerable search, filter, and sorting functionality
-
-### Command Injection
-- Shell command execution with user input
-- Logging functionality that executes system commands
-
-### Hardcoded Secrets
-  -d '{"user_id":1,"product_id":1,"quantity":2,"total_price":1999.98}'
-````markdown
-# InsecureGoMonorepo
-
-⚠️ **WARNING: This repository contains intentionally vulnerable code for security testing demonstrations. DO NOT use in production!**
-
-[![Packages CI](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/packages.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/packages.yml) [![Users Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/users-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/users-service.yml) [![Products Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/products-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/products-service.yml) [![Orders Service](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/orders-service.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/orders-service.yml) [![API Gateway](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/api-gateway.yml/badge.svg?branch=main)](https://github.com/kadraman/InsecureGoMonorepo/actions/workflows/api-gateway.yml)
 
 An insecure Go microservices monorepo designed for application security testing scenarios with GitHub Advanced Security, Fortify/OpenText, and other security scanning tools.
 

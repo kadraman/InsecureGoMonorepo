@@ -29,6 +29,14 @@ type Product struct {
 
 func main() {
 	logger = logging.NewLogger("products-service")
+	// Set per-service defaults for DB auto-seeding if not already set
+	if os.Getenv("DB_AUTO_SEED") == "" {
+		os.Setenv("DB_AUTO_SEED", "1")
+	}
+	if os.Getenv("DB_SEED_FILE") == "" {
+		os.Setenv("DB_SEED_FILE", "services/products-service/seed.sql")
+	}
+
 	cfg, _ = config.LoadConfig("")
 	db, _ = database.NewDatabase(cfg.DatabaseHost, cfg.DatabaseUser, cfg.DatabasePassword, cfg.DatabasePort)
 

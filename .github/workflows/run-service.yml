@@ -37,7 +37,7 @@ jobs:
 
   run-service:
     needs: validate
-    uses: ./.github/workflows/common-build-test.yml
+    uses: ./.github/workflows/common/build-test.yml
     with:
       path: ${{ format('services/{0}', needs.validate.outputs.service) }}
       command: ${{ needs.validate.outputs.command }}
