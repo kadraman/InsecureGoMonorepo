@@ -48,7 +48,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v4
         with:
-          context: ${{ inputs.service_path }}
+          context: .
           file: ${{ inputs.service_path }}/${{ inputs.dockerfile }}
           push: true
           tags: ${{ inputs.image_name }}:${{ inputs.tags }}
