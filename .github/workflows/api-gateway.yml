@@ -1,0 +1,22 @@
+name: "CI - api-gateway"
+
+on:
+  push:
+    paths:
+      - 'services/api-gateway/**'
+  pull_request:
+    paths:
+      - 'services/api-gateway/**'
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Command to run in the service directory'
+        required: false
+        default: 'go test ./...'
+
+jobs:
+  run-common:
+    uses: ./.github/workflows/common-build-test.yml
+    with:
+      path: services/api-gateway
+      command: ${{ github.event.inputs.command || 'go test ./...' }}

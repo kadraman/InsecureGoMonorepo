@@ -1,0 +1,22 @@
+name: "CI - orders-service"
+
+on:
+  push:
+    paths:
+      - 'services/orders-service/**'
+  pull_request:
+    paths:
+      - 'services/orders-service/**'
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Command to run in the service directory'
+        required: false
+        default: 'go test ./...'
+
+jobs:
+  run-common:
+    uses: ./.github/workflows/common-build-test.yml
+    with:
+      path: services/orders-service
+      command: ${{ github.event.inputs.command || 'go test ./...' }}

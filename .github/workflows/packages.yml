@@ -1,0 +1,16 @@
+name: "CI - common packages"
+
+on:
+  push:
+    paths:
+      - 'pkg/**'
+  pull_request:
+    paths:
+      - 'pkg/**'
+
+jobs:
+  run-common:
+    uses: ./.github/workflows/common-build-test.yml
+    with:
+      path: pkg
+      command: go test ./...
