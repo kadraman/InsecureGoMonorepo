@@ -7,6 +7,10 @@ on:
       - 'services/orders-service/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   publish:
     uses: ./.github/workflows/publish-container.yml
