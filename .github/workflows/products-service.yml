@@ -1,0 +1,28 @@
+name: "CI - products-service"
+
+on:
+  push:
+    paths:
+      - 'services/products-service/**'
+  pull_request:
+    paths:
+      - 'services/products-service/**'
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Command to run in the service directory'
+        required: false
+        default: 'go test ./...'
+
+jobs:
+  run-common:
+    uses: ./.github/workflows/common/build-test.yml
+    with:
+      path: services/products-service
+      command: ${{ github.event.inputs.command || 'go test ./...' }}
+  run-fortify:
+    needs: run-common
+    uses: ./.github/workflows/common/fortify-ast-scan.yml
+    with:
+      path: services/products-service
+      name: products-service

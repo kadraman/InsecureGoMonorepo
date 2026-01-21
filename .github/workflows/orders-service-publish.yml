@@ -1,0 +1,17 @@
+name: Publish Orders Service Container
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/orders-service/**'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: ./.github/workflows/common/publish-container.yml
+    with:
+      service_path: 'services/orders-service'
+      image_name: 'ghcr.io/${{ github.repository_owner }}/orders-service'
+      dockerfile: 'Dockerfile'
+      tags: 'latest'

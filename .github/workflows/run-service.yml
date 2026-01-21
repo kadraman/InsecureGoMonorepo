@@ -1,0 +1,43 @@
+name: "Run specific service"
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service directory name under services/ to run (e.g. users-service)'
+        required: true
+        type: string
+      command:
+        description: 'Command to run in the service directory'
+        required: false
+        default: 'go test ./...'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      service: ${{ github.event.inputs.service }}
+      command: ${{ github.event.inputs.command }}
+    steps:
+      - name: Validate service name
+        run: |
+          allowed=(users-service products-service orders-service api-gateway)
+          svc="${{ github.event.inputs.service }}"
+          ok=false
+          for a in "${allowed[@]}"; do
+            if [[ "$a" == "$svc" ]]; then
+              ok=true
+              break
+            fi
+          done
+          if [ "$ok" != "true" ]; then
+            echo "Invalid service: $svc"
+            exit 1
+          fi
+
+  run-service:
+    needs: validate
+    uses: ./.github/workflows/common/build-test.yml
+    with:
+      path: ${{ format('services/{0}', needs.validate.outputs.service) }}
+      command: ${{ needs.validate.outputs.command }}

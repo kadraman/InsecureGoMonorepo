@@ -1,0 +1,25 @@
+name: "Common: Fortify AST scan (placeholder)"
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+      name:
+        required: false
+        type: string
+        default: 'target'
+
+jobs:
+  fortify-placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Placeholder Fortify AST scan
+        run: |
+          echo "Placeholder Fortify AST scan"
+          echo "Target: ${{ inputs.name }}"
+          echo "Path: ${{ inputs.path }}"
