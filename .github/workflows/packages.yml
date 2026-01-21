@@ -10,13 +10,13 @@ on:
 
 jobs:
   run-common:
-    uses: ./.github/workflows/common/build-test.yml
+    uses: ./.github/workflows/build-test.yml
     with:
       path: pkg
       command: go test ./...
   run-fortify:
     needs: run-common
-    uses: ./.github/workflows/common/fortify-ast-scan.yml
+    uses: ./.github/workflows/fortify-ast-scan.yml
     with:
       path: pkg
       name: packages
