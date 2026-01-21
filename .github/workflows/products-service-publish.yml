@@ -1,0 +1,17 @@
+name: Publish Products Service Container
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/products-service/**'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: ./.github/workflows/common/common-publish-container.yml
+    with:
+      service_path: 'services/products-service'
+      image_name: 'ghcr.io/${{ github.repository_owner }}/products-service'
+      dockerfile: 'Dockerfile'
+      tags: 'latest'
